@@ -1,11 +1,10 @@
-import ThemeToggle from "@/components/ThemeToggle/ThemeToogle";
-import Image from "next/image";
+import { ThemeToggle } from "@/shared/components/ThemeToggle/ThemeToggle";
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="bg-white dark:bg-gray-900 min-h-screen">
       <ThemeToggle />
-      <h3 className="text-3xl underline  font-bold">Hola habit flow</h3>
+      <h3 className="text-black dark:text-white">Hola desde page</h3>
     </div>
   );
 }
