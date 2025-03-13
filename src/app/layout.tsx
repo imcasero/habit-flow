@@ -30,7 +30,9 @@ export default function RootLayout({
           ${geistSans.variable} ${geistMono.variable} 
         `}
       >
-        <ThemeProvider attribute="class">{children}</ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
