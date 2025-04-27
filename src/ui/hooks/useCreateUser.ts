@@ -1,29 +1,38 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Habit } from "@/core/domain/Habit";
+import { useState } from "react";
 import { User } from "@/core/domain/dto/auth";
+import { Session } from "@supabase/supabase-js";
 
-export const useCreateUser = (newUserData: User) => {
-  const [userData, setUserData] = useState<Habit[]>([]);
-  const [loading, setLoading] = useState(true);
+export const useCreateUser = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!newUserData) return;
+  const createUser = async (newUserData: User): Promise<Session | null> => {
+    setLoading(true);
+    setError(null);
 
-    fetch(`/api/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUserData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUserData(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [newUserData]);
+    try {
+      const response = await fetch(`/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUserData),
+      });
 
-  return { userData, loading };
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
+      const session = await response.json();
+      return session;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { createUser, loading, error };
 };
