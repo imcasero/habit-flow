@@ -1,10 +1,4 @@
-export interface RegisterUserDTO {
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
-export interface LoginUserDTO {
+export interface User {
   email: string;
   password: string;
 }

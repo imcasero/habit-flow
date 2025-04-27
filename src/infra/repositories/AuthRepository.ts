@@ -1,9 +1,9 @@
-import { LoginUserDTO, RegisterUserDTO } from "@/core/domain/dto/auth";
+import { User } from "@/core/domain/dto/auth";
 import { supabase } from "../supabase/supabaseClient";
 import { Session } from "@supabase/supabase-js";
 
 export class AuthRepository {
-  static async registerUser(newUserData: RegisterUserDTO): Promise<Session> {
+  static async registerUser(newUserData: User): Promise<Session> {
     const { data, error } = await supabase.auth.signUp({
       email: newUserData.email,
       password: newUserData.password,
@@ -13,7 +13,7 @@ export class AuthRepository {
     return data.session;
   }
 
-  static async loginUser(userData: LoginUserDTO): Promise<void> {
+  static async loginUser(userData: User): Promise<void> {
     const { data, error } = await supabase.auth.signInWithPassword(userData);
 
     if (error) throw new Error(error.message);

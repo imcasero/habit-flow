@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Habit } from "@/core/domain/Habit";
-import { RegisterUserDTO } from "@/core/domain/dto/auth";
+import { User } from "@/core/domain/dto/auth";
 
-export const useCreateUser = (newUserData: RegisterUserDTO) => {
+export const useCreateUser = (newUserData: User) => {
   const [userData, setUserData] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
 
