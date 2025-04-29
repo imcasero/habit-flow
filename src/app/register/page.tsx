@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useCreateUser } from "@/ui/hooks/useCreateUser";
 
 export default function Register() {
-  const { createUser, loading, error } = useCreateUser();
+  const { createUser, loading, error, needsEmailVerification, email } =
+    useCreateUser();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -62,6 +63,23 @@ export default function Register() {
         onPasswordChange={handlePasswordChange}
         onSubmit={handleSubmit}
       />
+
+      {needsEmailVerification && (
+        <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+          A verification email has been sent to <strong>{email}</strong>. Please
+          check your inbox to verify your account.
+        </div>
+      )}
+      {error && (
+        <div className="text-center text-sm text-red-500 dark:text-red-400">
+          {error}
+        </div>
+      )}
+      {loading && (
+        <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+          Creating your account...
+        </div>
+      )}
     </main>
   );
 }
