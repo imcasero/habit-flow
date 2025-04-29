@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { useCreateUser } from "@/ui/hooks/useCreateUser";
 
 export default function Register() {
-  const { createUser, loading, error, needsEmailVerification, email } =
-    useCreateUser();
+  const { createUser, error, needsEmailVerification, email } = useCreateUser();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -47,10 +46,6 @@ export default function Register() {
       email: formData.email,
       password: formData.password,
     });
-    console.log("Session:", session);
-    if (session) {
-      alert(session);
-    }
   };
 
   return (
@@ -73,11 +68,6 @@ export default function Register() {
       {error && (
         <div className="text-center text-sm text-red-500 dark:text-red-400">
           {error}
-        </div>
-      )}
-      {loading && (
-        <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-          Creating your account...
         </div>
       )}
     </main>
