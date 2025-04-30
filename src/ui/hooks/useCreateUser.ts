@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { User } from "@/core/domain/dto/auth";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/infra/supabase/supabaseClient";
+import { AuthCredentials } from "@/core/auth/domain/types";
 
 export const useCreateUser = () => {
   const [loading, setLoading] = useState(false);
@@ -10,7 +10,9 @@ export const useCreateUser = () => {
   const [needsEmailVerification, setNeedsEmailVerification] = useState(false);
   const [email, setEmail] = useState<string | null>(null);
 
-  const createUser = async (newUserData: User): Promise<Session | null> => {
+  const createUser = async (
+    newUserData: AuthCredentials
+  ): Promise<Session | null> => {
     setLoading(true);
     setError(null);
     setNeedsEmailVerification(false);
