@@ -2,18 +2,18 @@
 import { RegisterForm } from "@/ui/components/Forms/RegisterForm/RegisterForm";
 import { useState, useEffect } from "react";
 import { useCreateUser } from "@/ui/hooks/useCreateUser";
+import { useRouter } from "next/navigation";
 
-export default function Register() {
-  const { createUser, error, needsEmailVerification, email } = useCreateUser();
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    agreedToTerms: false,
-  });
-
-  const [passwordError, setPasswordError] = useState<string | null>(null);
+function useFormValidation(
+  formData: {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    agreedToTerms: boolean;
+  },
+  passwordError: string | null
+) {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
@@ -26,6 +26,38 @@ export default function Register() {
 
     setIsButtonDisabled(!isFormValid);
   }, [formData, passwordError]);
+
+  return isButtonDisabled;
+}
+
+function useStorageListener(router: ReturnType<typeof useRouter>) {
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "auth-event") {
+        router.push("/dashboard");
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [router]);
+}
+
+export default function Register() {
+  const router = useRouter();
+  const { createUser, error, needsEmailVerification, email } = useCreateUser();
+  const initialFormData = {
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agreedToTerms: false,
+  };
+  const [formData, setFormData] = useState(initialFormData);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
+  const isButtonDisabled = useFormValidation(formData, passwordError);
+  useStorageListener(router);
 
   const handleFormChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));

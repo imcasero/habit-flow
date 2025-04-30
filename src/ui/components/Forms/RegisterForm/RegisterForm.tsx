@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Input } from "../Input/Input";
-import { Checkbox } from "../Checkbox/Checbox";
+import { Input } from "../../../shared/components/Input/Input";
+import { Checkbox } from "../../../shared/components/Checkbox/Checbox";
 
 interface RegisterFormProps {
   formData: {
