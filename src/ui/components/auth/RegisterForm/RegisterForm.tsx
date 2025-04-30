@@ -13,6 +13,8 @@ interface RegisterFormProps {
   isButtonDisabled: boolean;
   onFormChange: (field: string, value: string | boolean) => void;
   onPasswordChange: (value: string) => void;
+  onPasswordSecurityChange: (value: string) => void;
+  passwordSecurityError?: string | null;
   onSubmit: (e: React.FormEvent) => void;
 }
 
@@ -22,6 +24,8 @@ export const RegisterForm = ({
   isButtonDisabled,
   onFormChange,
   onPasswordChange,
+  onPasswordSecurityChange,
+  passwordSecurityError,
   onSubmit,
 }: RegisterFormProps) => {
   return (
@@ -44,7 +48,11 @@ export const RegisterForm = ({
           type="password"
           placeholder="Password"
           value={formData.password}
-          onChange={(e) => onFormChange("password", e.target.value)}
+          onChange={(e) => {
+            onPasswordSecurityChange(e.target.value);
+            onFormChange("password", e.target.value);
+          }}
+          error={passwordSecurityError ?? undefined}
         />
 
         <Input
@@ -52,7 +60,7 @@ export const RegisterForm = ({
           type="password"
           placeholder="Confirm Password"
           value={formData.confirmPassword}
-          onChange={(e) => onPasswordChange(e.target.value)}
+          onChange={(e) => onFormChange("confirmPassword", e.target.value)}
           error={passwordError ?? undefined}
         />
 
