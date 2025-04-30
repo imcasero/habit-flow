@@ -3,6 +3,8 @@ import { RegisterForm } from "@/ui/components/auth/RegisterForm/RegisterForm";
 import { useRegisterForm } from "@/ui/hooks/useRegisterForm";
 import { useCreateUser } from "@/ui/hooks/useCreateUser";
 import { useStorageNavigation } from "@/ui/hooks/useStorageNavigation";
+import { toast } from "@pheralb/toast";
+import { useEffect } from "react";
 
 export default function Register() {
   const {
@@ -25,6 +27,19 @@ export default function Register() {
       password: formData.password,
     });
   };
+  useEffect(() => {
+    if (error) {
+      toast.error({ text: error });
+    }
+    if (needsEmailVerification) {
+      toast.success({
+        text: `A verification email has been sent.`,
+        description: "Please check your inbox and verify your email address.",
+        icon: "📧",
+        delayDuration: 8000,
+      });
+    }
+  }, [error, needsEmailVerification, email]);
 
   return (
     <main className="bg-white dark:bg-black min-h-screen flex flex-col items-center gap-2 py-2.5">
@@ -36,19 +51,10 @@ export default function Register() {
         onPasswordChange={handlePasswordChange}
         onPasswordSecurityChange={handlePasswordSecurityChange}
         passwordSecurityError={passwordSecurityError}
-        onSubmit={handleSubmit}
+        onSubmit={async (e) => {
+          await handleSubmit(e);
+        }}
       />
-
-      {needsEmailVerification && (
-        <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-          A verification email has been sent to <strong>{email}</strong>.
-        </div>
-      )}
-      {error && (
-        <div className="text-center text-sm text-red-500 dark:text-red-400">
-          {error}
-        </div>
-      )}
     </main>
   );
 }

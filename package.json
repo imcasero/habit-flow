@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@pheralb/toast": "^1.0.0",
     "@supabase/supabase-js": "^2.49.3",
     "clsx": "^2.1.1",
     "cookie": "^1.0.2",
