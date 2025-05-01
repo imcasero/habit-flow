@@ -19,7 +19,6 @@ export default function Register() {
     passwordError,
     isButtonDisabled,
     handleFormChange,
-    handlePasswordChange,
     handlePasswordSecurityChange,
     passwordSecurityError,
   } = useRegisterForm();
@@ -30,6 +29,7 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await createUser({
+      username: formData.username,
       email: formData.email,
       password: formData.password,
     });
@@ -59,7 +59,6 @@ export default function Register() {
         passwordError={passwordError}
         isButtonDisabled={isButtonDisabled}
         onFormChange={handleFormChange}
-        onPasswordChange={handlePasswordChange}
         onPasswordSecurityChange={handlePasswordSecurityChange}
         passwordSecurityError={passwordSecurityError}
         onSubmit={async (e) => {

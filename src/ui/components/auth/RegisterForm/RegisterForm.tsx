@@ -4,6 +4,7 @@ import { Checkbox } from "../../../shared/components/Checkbox/Checbox";
 
 interface RegisterFormProps {
   formData: {
+    username: string;
     email: string;
     password: string;
     confirmPassword: string;
@@ -12,7 +13,6 @@ interface RegisterFormProps {
   passwordError: string | null;
   isButtonDisabled: boolean;
   onFormChange: (field: string, value: string | boolean) => void;
-  onPasswordChange: (value: string) => void;
   onPasswordSecurityChange: (value: string) => void;
   passwordSecurityError?: string | null;
   onSubmit: (e: React.FormEvent) => void;
@@ -23,7 +23,6 @@ export const RegisterForm = ({
   passwordError,
   isButtonDisabled,
   onFormChange,
-  onPasswordChange,
   onPasswordSecurityChange,
   passwordSecurityError,
   onSubmit,
@@ -35,6 +34,13 @@ export const RegisterForm = ({
       </div>
 
       <form className="flex flex-col gap-5" onSubmit={onSubmit}>
+        <Input
+          label="Username"
+          type="text"
+          placeholder="Username"
+          value={formData.username}
+          onChange={(e) => onFormChange("username", e.target.value)}
+        />
         <Input
           label="Email"
           type="email"

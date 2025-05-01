@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 interface RegisterFormData {
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -9,6 +10,7 @@ interface RegisterFormData {
 
 export function useRegisterForm() {
   const initialFormData: RegisterFormData = {
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -47,11 +49,6 @@ export function useRegisterForm() {
     }
   };
 
-  const handlePasswordChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, password: value }));
-    validatePasswordSecurity(value);
-  };
-
   const handlePasswordSecurityChange = (value: string) => {
     validatePasswordSecurity(value);
   };
@@ -79,7 +76,6 @@ export function useRegisterForm() {
     passwordSecurityError,
     isButtonDisabled,
     handleFormChange,
-    handlePasswordChange,
     handlePasswordSecurityChange,
   };
 }

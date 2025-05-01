@@ -12,7 +12,7 @@ export const LoginForm = () => {
         </p>
       </div>
       <form className="flex flex-col gap-6">
-        <Input label="Email" type="email" placeholder="your@email.com" />
+        <Input label="Username" type="text" placeholder="Username" />
         <Input label="Password" type="password" placeholder="Password" />
         <Checkbox label="Remember me" />
         <button
@@ -24,7 +24,7 @@ export const LoginForm = () => {
       </form>
       <p className="text-center text-gray-700 dark:text-gray-400">
         Dont have an account?{" "}
-        <Link href="/login" className="text-gray-500 hover:underline">
+        <Link href="/register" className="text-gray-500 hover:underline">
           Sing up here
         </Link>
       </p>

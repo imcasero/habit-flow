@@ -21,8 +21,12 @@ export const useCreateUser = () => {
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: newUserData.email,
         password: newUserData.password,
+
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: {
+            username: newUserData.username,
+          },
         },
       });
 
