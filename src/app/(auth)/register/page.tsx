@@ -4,9 +4,16 @@ import { useRegisterForm } from "@/ui/hooks/useRegisterForm";
 import { useCreateUser } from "@/ui/hooks/useCreateUser";
 import { useStorageNavigation } from "@/ui/hooks/useStorageNavigation";
 import { toast } from "@pheralb/toast";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useTheme } from "next-themes";
 
 export default function Register() {
+  const { resolvedTheme } = useTheme();
+  const theme = useMemo(
+    () => (resolvedTheme === "dark" ? "dark" : "light"),
+    [resolvedTheme]
+  );
+
   const {
     formData,
     passwordError,
@@ -29,7 +36,10 @@ export default function Register() {
   };
   useEffect(() => {
     if (error) {
-      toast.error({ text: error });
+      toast.error({
+        text: error,
+        theme: theme,
+      });
     }
     if (needsEmailVerification) {
       toast.success({
@@ -37,6 +47,7 @@ export default function Register() {
         description: "Please check your inbox and verify your email address.",
         icon: "📧",
         delayDuration: 8000,
+        theme: theme,
       });
     }
   }, [error, needsEmailVerification, email]);
