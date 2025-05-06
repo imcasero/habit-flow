@@ -50,7 +50,7 @@ export default function Register() {
         theme: theme,
       });
     }
-  }, [error, needsEmailVerification, email]);
+  }, [error, needsEmailVerification, email, theme]);
 
   return (
     <main className="bg-white dark:bg-black min-h-screen flex flex-col items-center gap-2 py-2.5">

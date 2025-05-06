@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/infra/supabase/supabaseClient";
 
-export default function Callback() {
+function CallbackContent() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading"
@@ -49,7 +49,7 @@ export default function Callback() {
     };
 
     confirmAndSetCookie();
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="p-6 text-center">
@@ -69,5 +69,13 @@ export default function Callback() {
         </>
       )}
     </div>
+  );
+}
+
+export default function Callback() {
+  return (
+    <Suspense fallback={<div className="p-6 text-center">Loading...</div>}>
+      <CallbackContent />
+    </Suspense>
   );
 }

@@ -14,7 +14,7 @@ export class SupabaseAuthRepository {
   }
 
   static async loginUser(userData: AuthCredentials): Promise<void> {
-    const { data, error } = await supabase.auth.signInWithPassword(userData);
+    const { error } = await supabase.auth.signInWithPassword(userData);
 
     if (error) throw new Error(error.message);
   }

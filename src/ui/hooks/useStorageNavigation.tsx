@@ -13,5 +13,5 @@ export function useStorageNavigation(path: string, event: string) {
 
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
-  }, [router]);
+  }, [router, event, path]);
 }
