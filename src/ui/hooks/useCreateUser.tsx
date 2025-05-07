@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { Session } from "@supabase/supabase-js";
-import { supabase } from "@/infra/supabase/supabaseClient";
 import { AuthCredentials } from "@/core/auth/domain/types";
+import { SupabaseAuthRepository } from "@/infra/auth/SupabaseAuthRepository";
 
 export const useCreateUser = () => {
   const [loading, setLoading] = useState(false);
@@ -18,31 +18,16 @@ export const useCreateUser = () => {
     setNeedsEmailVerification(false);
 
     try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email: newUserData.email,
-        password: newUserData.password,
-
-        options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
-          data: {
-            username: newUserData.username,
-          },
-        },
-      });
-
-      if (signUpError) {
-        throw new Error(signUpError.message);
-      }
-
-      if (!data.session) {
-        setNeedsEmailVerification(true);
-        setEmail(newUserData.email);
-        return null;
-      }
-
-      return data.session;
+      const session = await SupabaseAuthRepository.registerUser(newUserData);
+      return session;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
+
+      if (err instanceof Error && err.message.includes("email")) {
+        setNeedsEmailVerification(true);
+        setEmail(newUserData.email);
+      }
+
       return null;
     } finally {
       setLoading(false);

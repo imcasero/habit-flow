@@ -7,9 +7,17 @@ export class SupabaseAuthRepository {
     const { data, error } = await supabase.auth.signUp({
       email: newUserData.email,
       password: newUserData.password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/dashboard`,
+        data: {
+          username: newUserData.username,
+        },
+      },
     });
+
     if (error) throw new Error(error.message);
-    if (!data.session) throw new Error("Session is null");
+    //TODO: review this for dont throw an error if the email is not verified
+    if (!data.session) throw new Error("Email verification required");
     return data.session;
   }
 
