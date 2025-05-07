@@ -12,7 +12,7 @@ export const LoginForm = () => {
         </p>
       </div>
       <form className="flex flex-col gap-6">
-        <Input label="Username" type="text" placeholder="Username" />
+        <Input label="Email" type="email" placeholder="your@email.com" />
         <Input label="Password" type="password" placeholder="Password" />
         <Checkbox label="Remember me" />
         <button
