@@ -37,12 +37,6 @@ function CallbackContent() {
         return;
       }
 
-      await fetch("/api/set-cookie", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ accessToken }),
-      });
-
       localStorage.setItem("auth-event", Date.now().toString());
 
       setStatus("success");
