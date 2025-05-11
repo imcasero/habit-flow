@@ -1,6 +1,6 @@
 import { AuthCredentials } from "@/core/auth/domain/types";
 import { supabase } from "../supabase/supabaseClient";
-import { Session } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 
 export class SupabaseAuthRepository {
   static async registerUser(newUserData: AuthCredentials): Promise<Session> {
@@ -23,9 +23,10 @@ export class SupabaseAuthRepository {
 
   static async loginUser(
     userData: Omit<AuthCredentials, "username">
-  ): Promise<void> {
-    const { error } = await supabase.auth.signInWithPassword(userData);
+  ): Promise<User> {
+    const { data, error } = await supabase.auth.signInWithPassword(userData);
 
     if (error) throw new Error(error.message);
+    return data.user;
   }
 }
