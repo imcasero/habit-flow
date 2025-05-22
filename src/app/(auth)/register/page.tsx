@@ -42,6 +42,20 @@ export default function Register() {
       });
     }
     if (needsEmailVerification) {
+      const sessionData = localStorage.getItem(
+        "sb-jioiwpygfezsjcdojhcq-auth-token"
+      );
+
+      if (sessionData) {
+        fetch("/api/auth/set-session-cookie", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: sessionData,
+        });
+      }
+
       toast.success({
         text: `A verification email has been sent.`,
         description: "Please check your inbox and verify your email address.",

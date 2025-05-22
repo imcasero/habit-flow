@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  const res = await fetch(`${request.nextUrl.origin}/api/auth/check-auth`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export function middleware(request: NextRequest) {
+  const cookie = request.cookies.get("sb:session:cookie")?.value;
 
-  const { authenticated } = await res.json();
+  let authenticated = false;
+
+  try {
+    authenticated = cookie ? JSON.parse(cookie).authenticated : false;
+  } catch (e) {
+    console.error("Invalid cookie format:", cookie);
+    authenticated = false;
+  }
 
   if (!authenticated) {
-    // Si no está autenticado, redirigimos al login
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

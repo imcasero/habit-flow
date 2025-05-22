@@ -31,15 +31,33 @@ function CallbackContent() {
 
       const { data, error: sessionError } = await supabase.auth.getSession();
       const accessToken = data.session?.access_token;
+      const refreshToken = data.session?.refresh_token;
 
-      if (!accessToken || sessionError) {
+      if (!accessToken || !refreshToken || sessionError) {
         setStatus("error");
         return;
       }
 
-      localStorage.setItem("auth-event", Date.now().toString());
-
-      setStatus("success");
+      fetch("/api/auth/set-session-cookie", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Failed to set cookie");
+          }
+          localStorage.setItem("auth-event", Date.now().toString());
+          setStatus("success");
+        })
+        .catch(() => {
+          setStatus("error");
+        });
     };
 
     confirmAndSetCookie();

@@ -20,7 +20,7 @@ export default function Login() {
     rememberMe: false,
   });
 
-  const { loginUser, error, user, setError } = useLoginUser({
+  const { loginUser, error, user } = useLoginUser({
     email: formData.email,
     password: formData.password,
   });
@@ -43,6 +43,20 @@ export default function Login() {
       toast.error({ text: error, theme });
     }
     if (user) {
+      const sessionData = localStorage.getItem(
+        "sb-jioiwpygfezsjcdojhcq-auth-token"
+      );
+
+      if (sessionData) {
+        fetch("/api/auth/set-session-cookie", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: sessionData,
+        });
+      }
+
       console.log("User logged in:", user);
       router.push("/dashboard");
     }
