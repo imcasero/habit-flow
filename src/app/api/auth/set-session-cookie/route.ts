@@ -13,6 +13,8 @@ export async function POST(request: Request) {
 
     const cookieValue = body;
 
+    const expiresAt = new Date(cookieValue.expires_at * 1000);
+
     const response = NextResponse.json({ message: "Cookie set successfully" });
     response.cookies.set(
       "sb:session:cookie",
@@ -22,6 +24,7 @@ export async function POST(request: Request) {
         secure: process.env.NODE_ENV === "production",
         path: "/",
         sameSite: "strict",
+        expires: expiresAt,
       }
     );
 
